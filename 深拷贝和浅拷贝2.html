@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<script type="text/javascript">
+	function Birthday(newY,newM,newD){
+		this.y = newY;
+		this.m = newM;
+		this.d = newD;
+	}
+	
+	function Animal(newBir){
+		//this.bir = newBir;
+		this.bir = newBir; 
+	}
+	
+	function Person(newId){
+		this.id = newId;
+	}
+	
+	Person.prototype = new Animal(new Birthday(1,1,1));
+	Person.prototype.clone = function(){
+		let temp = new Person(this.id);
+		
+		temp.bir = new Birthday(this.bir.y,this.bir.m,this.bir.d);
+		
+		return temp;
+	}
+	let p1 = new Person("007");
+	let p2 = p1.clone();
+	
+	p2.bir.y =2020;
+	console.log(p1,p2)
+	console.log(p1.id,p1.bir.y);
+</script>

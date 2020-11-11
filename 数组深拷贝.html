@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<script type="text/javascript">
+//以下方法只是适用于数组元素全是数值
+
+var arr=[1,2,3]
+var brr=[]
+//for 循环实现数组的深拷贝
+// for(var i=0;i<arr.length;i++){
+// 	brr.push(arr[i])
+// }
+
+// concat 数组拼接返回一个新数组
+// brr=arr.concat()
+
+// map 遍历一个数组并且返回一个新数组
+
+// brr=arr.map((item,index)=>{
+// 	return item
+// })
+
+//slice 
+// brr=arr.slice(0)
+
+//解构
+brr=[...arr]
+// [brr]=[...arr]
+
+brr[0]=0,
+console.log(arr,brr)
+
+</script>

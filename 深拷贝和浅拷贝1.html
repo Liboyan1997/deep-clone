@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<script type="text/javascript">
+	// 在传入父类传入的参数有引用元素时，则需要考虑深拷贝和浅拷贝的问题。
+	// 浅拷贝：传参时值只传递了引用空间的地址
+	// 深拷贝：开辟空间，且赋值
+	
+	//内置基本类型与引用类型的区别
+		
+	function Student(newName){
+		this.name = newName;
+		
+		this.clone = function(){
+			let temp = new Student(this.name);
+			
+			return temp;
+		}
+	}
+	
+	// let i = 123;
+	let s = new Student("延玉林");
+	
+	//浅拷贝:数值的拷贝,但不拷贝空间,也是说两个引用对象指向的是同一块空间
+	// let s1 = s;
+	
+	//深拷贝:不只拷贝数值,而且还要拷贝空间
+	let s1 = s.clone();
+	console.log(s1.name);
+	
+	s1.name = "魏杰";
+	console.log(s1.name);
+	console.log(s.name)
+</script>

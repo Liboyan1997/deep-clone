@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<script type="text/javascript">
+//只针对对象属性都是一个对象或者值（不包括数组）对function 也是能进行拷贝的  typeof function(){} == function
+ function clone(){
+	if(typeof target==='object'){
+		let cloneTarget={};
+		for(const key in target){
+			cloneTarget[key]=clone(target[key])
+		}
+		return cloneTarget
+	}else{
+		return target
+	}
+};
+//考虑数组的深拷贝
+function clone1(target) {
+	if(typeof target==='object'){
+		 let cloneTarget=Array.isArray(target) ? [] : {};
+		for(const key in target){
+			cloneTarget[key]=clone1(target[key])
+		}
+		return cloneTarget
+	}else{
+		return target
+	}
+};
+// 由于typeof target 考虑不到null typeof null =object 
+function clone2(target) {
+	if(typeof target==='object'){
+		let cloneTarget =null
+		if(target === null){
+		}else{
+		  cloneTarget=Array.isArray(target) ? [] : {};
+		}
+		for(const key in target){
+			cloneTarget[key]=clone2(target[key])
+		}
+		return cloneTarget
+	}else{
+		return target
+	}
+};
+
+//对于循环引用 对象自己的属性地址指向自己的地址 
+//let target={a:'a'},target.b=target 上面的深拷贝会导致栈内存溢出了 Maximum call stack size exceeded
+//用map这种数据结构来记录每次 clone的 target(map的键)和cloneTarget
+function clone3(target,map=new Map()) {
+  if (typeof target === 'object') {
+		let cloneTarget =null
+		if(target === null){
+		}else{
+		  cloneTarget=Array.isArray(target) ? [] : {};
+		}
+		//每次递归调用才有机会进入这个分支 检测属性 如果有循环引用 则   cloneTarget[key] =  cloneTarget
+        if (map.get(target)) {
+            return map.get(target);
+        }
+        map.set(target, cloneTarget);
+        for (const key in target) {
+            cloneTarget[key] = clone3(target[key], map);
+        }
+        return cloneTarget;
+    } else {
+        return target;
+    }
+};
+let target = {
+    field1: 1,
+    field2: undefined,
+    field3: 'ConardLi',
+    field4: {
+        child: 'child',
+        child2: {
+            child2: 'child2'
+        }
+    }
+};
+let target1 = {
+    field1: 1,
+    field2: undefined,
+    field3: 'ConardLi',
+    field4: {
+        child: 'child',
+        child2: {
+            child2: 'child2'
+        }
+    },
+	field5:[2, 4, 8],
+	field6:null
+};
+//js 变量 类型判断
+// console.log(typeof 1)
+// console.log(typeof "1")
+// let a=function(){}
+// console.log(typeof a)
+// a={}
+// console.log(typeof a)
+// a=[]
+// console.log(typeof a)
+// Object.prototype.toString.call(null)
+// console.log(Object.prototype.toString.call(null))
+// console.log(Object.prototype.toString.call(undefined))
+// console.log(typeof null)
+// console.log(typeof undefined)
+// console.log(null===null)
+// console.log(null==null)
+// console.log(undefined===null)
+// console.log(undefined==null)
+
+
+//map 验证对象是否有循环引用
+//map 在储存结构上和Object类似不过map有Object没有的特性
+//1 map.size 可以获取键值对个数 
+//2 map的键可以是任何一种数据类型
+
+let map=new Map();
+ map.set('a',1)
+ map.set('b','1')
+ map.set('c',[1,2,3])
+let obj={a:1}
+let a='1'
+
+map.set('d',obj)
+map.set(obj,a)
+obj.a=0
+a=1
+console.log(map,map.size)
+
+let target2={
+	 field1: 1,
+	 field2:undefined,
+	 field3:null,
+	 field4:'1',
+	 field5:{
+		 child1:target1
+	 },
+	 field6:[1,2,3],
+	 field7:function(a,b){return a+b}
+}
+// console.log(clone2(target2))
+let target3=clone2(target2)
+
+// target3.field5=target3
+// console.log(target3,target2)
+// console.log(clone3(target3))
+</script>
